@@ -66,24 +66,22 @@ def send_sns_notification(subject: str, message: str, success: bool = True) -> N
         logger.debug("SNS_TOPIC_ARN not set — skipping SNS notification.")
         return
 
-    # sns_client = boto3.client("sns")
-    # try:
-    #     # TODO: Uncomment when SNS topic is ready
-    #     # sns_client.publish(
-    #     #     TopicArn=topic_arn,
-    #     #     Subject=subject,
-    #     #     Message=message,
-    #     #     MessageAttributes={
-    #     #         "status": {
-    #     #             "DataType": "String",
-    #     #             "StringValue": "success" if success else "failure",
-    #     #         }
-    #     #     },
-    #     # )
-    #     # logger.info("SNS notification sent: %s", subject)
-    #     pass
-    # except botocore.exceptions.ClientError:
-    #     logger.exception("Failed to publish SNS notification.")
+    sns_client = boto3.client("sns")
+    try:
+        sns_client.publish(
+            TopicArn=topic_arn,
+            Subject=subject,
+            Message=message,
+            MessageAttributes={
+                "status": {
+                    "DataType": "String",
+                    "StringValue": "success" if success else "failure",
+                }
+            },
+        )
+        logger.info("SNS notification sent: %s", subject)
+    except botocore.exceptions.ClientError:
+        logger.exception("Failed to publish SNS notification.")
 
 
 # ---------------------------------------------------------------------------

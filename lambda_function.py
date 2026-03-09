@@ -409,8 +409,11 @@ def lambda_handler(event: dict, context: object) -> dict:
 
         # Step 5 — upload the zip
         timestamp = datetime.now(tz=timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        dest_prefix = os.environ.get("DESTINATION_PREFIX", "XML_/")
+        if not dest_prefix.endswith("/"):
+            dest_prefix = dest_prefix + "/"
         destination_key = (
-            f"scap-results/{date_folder}/scap_results_{date_folder}_{timestamp}.zip"
+            f"{dest_prefix}scap_results_{date_folder}_{timestamp}.zip"
         )
         upload_zip(s3_client, destination_bucket, zip_buffer, destination_key)
 

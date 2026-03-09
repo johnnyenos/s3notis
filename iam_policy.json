@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowListSourceBucket",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::<SOURCE_BUCKET_NAME>",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": [
+            "reports/test/*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowGetObjectFromSourceBucket",
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::<SOURCE_BUCKET_NAME>/reports/test/*"
+    },
+    {
+      "Sid": "AllowListDestinationBucket",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::<DESTINATION_BUCKET_NAME>",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": [
+            "scap-results/*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowPutObjectToDestinationBucket",
+      "Effect": "Allow",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::<DESTINATION_BUCKET_NAME>/scap-results/*"
+    },
+    {
+      "Sid": "AllowCloudWatchLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:*:*:log-group:/aws/lambda/*"
+    }
+  ]
+}

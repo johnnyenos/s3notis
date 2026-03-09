@@ -1,0 +1,12 @@
+# boto3 is provided by the AWS Lambda Python 3.12 runtime.
+# It is listed here so that local development and CI environments can install
+# a pinned version without relying on the managed runtime copy.
+boto3>=1.34.0
+
+# Type stubs for boto3 — used only during development / mypy checks.
+# Remove from production packaging.
+boto3-stubs[s3,sns]>=1.34.0
+
+# Test dependencies
+pytest>=8.0.0
+moto[s3]>=5.0.0
